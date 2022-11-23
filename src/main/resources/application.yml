@@ -1,0 +1,30 @@
+server:
+  port: 9999
+camunda:
+  bpm:
+    database:
+      # 乱写类型会出错，不如不写，camunda会自己判断。Error while building ibatis SqlSessionFactory: null
+      type: postgres
+      # camunda添加drop-create该配置，会导致空表肖无法自动建表，老坑逼了
+      schema-update: true
+    admin-user:
+      id: demo
+      password: demo
+    filter:
+      create: All tasks
+    auto-deployment-enabled: true
+
+spring:
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    url: jdbc:postgresql://10.0.0.10:5432/camunda
+    username: postgres
+    password: postgres
+  jpa:
+    hibernate:
+      naming:
+        physical-strategy: org.springframework.boot.orm.jpa.hibernate.SpringPhysicalNamingStrategy
+      ddl-auto: create
+    show-sql: false
+    database-platform: org.hibernate.dialect.PostgreSQL10Dialect
+
