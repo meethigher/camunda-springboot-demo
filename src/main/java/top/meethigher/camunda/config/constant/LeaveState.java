@@ -1,6 +1,5 @@
 package top.meethigher.camunda.config.constant;
 
-import org.omg.CORBA.UNSUPPORTED_POLICY;
 
 /**
  * 请假状态

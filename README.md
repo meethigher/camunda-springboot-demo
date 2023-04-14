@@ -25,8 +25,10 @@
 
 ![基于springboot+jpa+camunda实现简单的请假审批流程](https://meethigher.top/blog/2022/camunda-practice/image-20221124144225583.png)
 
-# 二、参考致谢
+# 二、思路借鉴
 
 1. [xiaojing5576/workflow: 基于camunda实现的工作流设计](https://github.com/xiaojing5576/workflow)
 2. [FuriousPws002/camunda-bpm-spring-boot-example: Spring Boot and database integration camunda bpmn](https://github.com/FuriousPws002/camunda-bpm-spring-boot-example)
 
+3. [camunda-run: camunda工作流集成](https://gitee.com/heshaobing/camunda-run)
+4. [蓝花梗/wf-camunda - 码云 - 开源中国](https://gitee.com/lanhuageng/wf-camunda)
