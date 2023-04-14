@@ -4,7 +4,7 @@ camunda:
   bpm:
     database:
       # 乱写类型会出错，不如不写，camunda会自己判断。Error while building ibatis SqlSessionFactory: null
-      type: postgres
+      type: h2
       # camunda添加drop-create该配置，会导致空表肖无法自动建表，老坑逼了
       schema-update: true
     admin-user:
@@ -13,13 +13,24 @@ camunda:
     filter:
       create: All tasks
     auto-deployment-enabled: true
-
+# h2配置
+h2:
+  console:
+    # 启用控制台
+    enabled: false
+    path: /h2
+    settings:
+      # 允许外人连接
+      web-allow-others: true
+      # 配置h2首选项时的账号密码
+      web-admin-password: test
 spring:
+  # 数据源配置
   datasource:
-    driver-class-name: org.postgresql.Driver
-    url: jdbc:postgresql://10.0.0.10:5432/camunda
-    username: postgres
-    password: postgres
+    driver-class-name: org.h2.Driver
+    url: jdbc:h2:mem:test.db
+    username: sa
+    password:
   jpa:
     hibernate:
       naming:

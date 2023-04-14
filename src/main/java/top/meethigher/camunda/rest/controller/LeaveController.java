@@ -1,5 +1,6 @@
 package top.meethigher.camunda.rest.controller;
 
+
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
@@ -7,16 +8,22 @@ import lombok.extern.slf4j.Slf4j;
 import org.camunda.bpm.engine.RuntimeService;
 import org.camunda.bpm.engine.TaskService;
 import org.camunda.bpm.engine.task.Task;
+import org.camunda.bpm.engine.task.TaskQuery;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.ObjectUtils;
 import org.springframework.web.bind.annotation.*;
 import top.meethigher.camunda.config.constant.LeaveState;
+import top.meethigher.camunda.config.constant.UserType;
 import top.meethigher.camunda.entity.Approval;
 import top.meethigher.camunda.entity.Leave;
 import top.meethigher.camunda.entity.LeaveAssigner;
 import top.meethigher.camunda.entity.repository.ApprovalRepository;
 import top.meethigher.camunda.entity.repository.LeaveAssignerRepository;
 import top.meethigher.camunda.entity.repository.LeaveRepository;
+import top.meethigher.camunda.rest.converter.ApprovalConverter;
+import top.meethigher.camunda.rest.converter.LeaveConverter;
+import top.meethigher.camunda.rest.dto.ApprovalDTO;
+import top.meethigher.camunda.rest.dto.LeaveDTO;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -53,6 +60,7 @@ public class LeaveController {
 
     private final TaskService taskService;
 
+
     /**
      * 提交一个请假申请
      * 触发一个请假流程的创建
@@ -66,14 +74,12 @@ public class LeaveController {
      * "userId": "000001",
      * "userName": "孙悟空"
      * }
-     *
-     * @param leave 请假信息
      */
     @ApiOperation("提交请假")
     @PostMapping("/apply")
     @Transactional(rollbackFor = Exception.class)
-    public Integer apply(@RequestBody Leave leave) {
-        leave.setLeaveState(LeaveState.APPROVING.getCode());
+    public Integer apply(LeaveDTO leaveDTO) {
+        Leave leave = LeaveConverter.toLeave(leaveDTO);
         leaveRepository.save(leave);
         //开启流程
         //runtimeService.startProcessInstanceByKey(PROCESS_ID, JSONUtils.object2Map(leave));
@@ -98,12 +104,13 @@ public class LeaveController {
     /**
      * 查询当前用户的审批任务
      *
-     * @param userId 用户编号
+     * @param userType 用户编号
      * @return 属于该用户的审批任务
      */
     @ApiOperation("查询属于当前人的审批信息")
-    @GetMapping("/queryApproval/{userId}")
-    public List<Leave> queryApproval(@PathVariable("userId") String userId) {
+    @GetMapping("/queryApproval/{user}")
+    public List<Leave> queryApproval(@PathVariable("user") UserType userType) {
+        String userId = userType.getCode();
         List<Leave> list = new LinkedList<>();
         List<LeaveAssigner> assignerList = leaveAssignerRepository.findByUserId(userId);
         if (ObjectUtils.isEmpty(assignerList)) {
@@ -117,13 +124,17 @@ public class LeaveController {
     @ApiOperation("提交审批意见")
     @PostMapping("/submitApproval")
     @Transactional(rollbackFor = Exception.class)
-    public void submitApproval(@RequestBody Approval approval) {
+    public void submitApproval(ApprovalDTO approvalDTO) {
+        if (approvalDTO.getResult().equals(LeaveState.APPROVING)) {
+            log.error("失败");
+            return;
+        }
+        Approval approval = ApprovalConverter.toApproval(approvalDTO);
         //查询流程中任务
-        Task task = taskService.createTaskQuery()
+        TaskQuery taskQuery = taskService.createTaskQuery()
                 .processDefinitionKey(PROCESS_KEY)
-                .processInstanceBusinessKey(String.valueOf(approval.getLeaveId()))
-//                .processVariableValueEquals("leaveId",approval.getLeaveId())
-                .singleResult();
+                .processInstanceBusinessKey(String.valueOf(approval.getLeaveId())).taskAssignee(approval.getApprover());
+        Task task = taskQuery.singleResult();
         String assignee = task.getAssignee();
         if (!assignee.equals(approval.getApprover())) {
             log.error("失败,无权限审批");
