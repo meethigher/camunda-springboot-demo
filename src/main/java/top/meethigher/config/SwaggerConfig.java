@@ -1,11 +1,10 @@
-package top.meethigher.camunda.config;
+package top.meethigher.config;
 
 import io.swagger.annotations.Api;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.env.Environment;
 import org.springframework.core.env.Profiles;
-import springfox.documentation.builders.PathSelectors;
 import springfox.documentation.builders.RequestHandlerSelectors;
 import springfox.documentation.service.ApiInfo;
 import springfox.documentation.service.Contact;
@@ -15,13 +14,13 @@ import springfox.documentation.spring.web.plugins.Docket;
 import java.util.ArrayList;
 
 /**
- * bean配置类
+ *
  *
  * @author chenchuancheng
- * @since 2022/11/23 16:10
+ * @since 2023/4/19 14:28
  */
 @Configuration
-public class BeanConfigure {
+public class SwaggerConfig {
 
     /**
      * 配置swagger实例，如果有多个开发组，可配置多个docket，ui下滑栏选择
@@ -30,7 +29,7 @@ public class BeanConfigure {
      * @return 对ui来说一个docket就是一个开发组
      */
     @Bean
-    public Docket docket(Environment environment) {
+    public Docket openDocket(Environment environment) {
         //开发环境时生效
         Profiles profiles = Profiles.of("dev");
         boolean flag = environment.acceptsProfiles(profiles);
@@ -41,8 +40,9 @@ public class BeanConfigure {
                 .enable(flag)
                 .select()
                 .apis(RequestHandlerSelectors.withClassAnnotation(Api.class))
-                .paths(PathSelectors.any())
-                .build().groupName("开发组");
+                // 配置如何通过path过滤,即这里只扫描请求以/kuang开头的接口
+                //.paths(PathSelectors.ant(String.format("%s/open/**", contextPath)))
+                .build().groupName("web");
     }
 
     /**
@@ -52,12 +52,16 @@ public class BeanConfigure {
      */
     private ApiInfo apiInfo() {
         return new ApiInfo(
-                "Camunda工作流使用demo",
                 "接口文档",
-                "1.0",
-                "http://127.0.0.1:9999/swagger-ui/index.html",
-                new Contact("meethigher", "http://meethigher.top", "meethigher@qq.com"),
-                "Apache 2.0",
-                "http://www.apache.org/licenses/LICENSE-2.0", new ArrayList());
+                "用于测试多模块项目构建",
+                "接口文档1.0",
+                "",
+                new Contact("meethigher", "https://meethigher.top", "meethigher@qq.com"),
+                "",
+                "",
+                new ArrayList<>()
+        );
     }
+
+
 }

@@ -1,5 +1,10 @@
+logging:
+  config: classpath:logback-diy.xml
+  # 相对路径则是相对当前应用路径，如log就是在jar包所在路径下存储
+  file:
+    path: ./log
 server:
-  port: 9999
+  port: 8080
 camunda:
   bpm:
     database:
@@ -12,30 +17,35 @@ camunda:
       password: demo
     filter:
       create: All tasks
-    auto-deployment-enabled: true
-# h2配置
-h2:
-  console:
-    # 启用控制台
-    enabled: false
-    path: /h2
-    settings:
-      # 允许外人连接
-      web-allow-others: true
-      # 配置h2首选项时的账号密码
-      web-admin-password: test
+    auto-deployment-enabled: false
+    webapp:
+      application-path: /camunda
 spring:
+
+  # h2配置
+  h2:
+    console:
+      # 启用控制台
+      enabled: true
+      path: /h2
+      settings:
+        # 允许外人连接
+        web-allow-others: true
+        # 配置h2首选项时的账号密码
+        web-admin-password: test
   # 数据源配置
   datasource:
     driver-class-name: org.h2.Driver
     url: jdbc:h2:mem:test.db
-    username: sa
-    password:
+    username: root
+    password: meethigher
   jpa:
     hibernate:
       naming:
         physical-strategy: org.springframework.boot.orm.jpa.hibernate.SpringPhysicalNamingStrategy
       ddl-auto: create
-    show-sql: false
+    show-sql: true
     database-platform: org.hibernate.dialect.PostgreSQL10Dialect
+  profiles:
+    active: dev
 

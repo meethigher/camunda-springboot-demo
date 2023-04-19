@@ -1,0 +1,78 @@
+{
+  "components": [
+    {
+      "label": "请假人姓名",
+      "type": "textfield",
+      "id": "Field_0n06ngs",
+      "key": "userName",
+      "description": "请假人姓名",
+      "defaultValue": "${userName}",
+      "disabled": true
+    },
+    {
+      "label": "请假原因",
+      "type": "textfield",
+      "id": "Field_044gcff",
+      "key": "reason",
+      "description": "请假原因",
+      "defaultValue": "${reason}",
+      "disabled": true
+    },
+    {
+      "values": [
+        {
+          "value": "0",
+          "label": "年假"
+        },
+        {
+          "label": "事假",
+          "value": "1"
+        }
+      ],
+      "label": "请假类型",
+      "type": "radio",
+      "id": "Field_1l0c1ez",
+      "key": "leaveType",
+      "description": "请假类型",
+      "disabled": true
+    },
+    {
+      "label": "请假天数",
+      "type": "textfield",
+      "id": "Field_1r6cr4a",
+      "key": "days",
+      "description": "请假天数",
+      "defaultValue": "${days}",
+      "disabled": true
+    },
+    {
+      "values": [
+        {
+          "value": "1",
+          "label": "通过"
+        },
+        {
+          "label": "拒绝",
+          "value": "2"
+        }
+      ],
+      "label": "result",
+      "type": "radio",
+      "id": "Field_08rl58c",
+      "key": "result",
+      "description": "审批",
+      "validate": {
+        "required": true
+      }
+    }
+  ],
+  "type": "default",
+  "id": "result",
+  "exporter": {
+    "name": "Camunda Modeler",
+    "version": "5.3.0"
+  },
+  "executionPlatform": "Camunda Platform",
+  "executionPlatformVersion": "7.17.0",
+  "schemaVersion": 4
+}

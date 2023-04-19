@@ -1,0 +1,75 @@
+{
+  "components": [
+    {
+      "label": "userId",
+      "type": "textfield",
+      "id": "Field_1qvruuh",
+      "key": "userId",
+      "description": "用户编号",
+      "defaultValue": "000001",
+      "disabled": false
+    },
+    {
+      "label": "userName",
+      "type": "textfield",
+      "id": "Field_0qhboef",
+      "key": "userName",
+      "description": "用户名称",
+      "defaultValue": "孙悟空"
+    },
+    {
+      "label": "reason",
+      "type": "textfield",
+      "id": "Field_0y20d8w",
+      "key": "reason",
+      "description": "请假原因"
+    },
+    {
+      "label": "department",
+      "type": "textfield",
+      "id": "Field_0npv02k",
+      "key": "department",
+      "description": "所在部门",
+      "defaultValue": "西天取经组"
+    },
+    {
+      "label": "days",
+      "type": "number",
+      "id": "Field_0ig0pin",
+      "key": "days",
+      "description": "请假天数",
+      "validate": {
+        "min": 1,
+        "max": 365
+      },
+      "defaultValue": 1
+    },
+    {
+      "values": [
+        {
+          "label": "事假",
+          "value": "1"
+        },
+        {
+          "label": "年假",
+          "value": "0"
+        }
+      ],
+      "label": "leaveType",
+      "type": "radio",
+      "id": "Field_13r7qbx",
+      "key": "leaveType",
+      "description": "请假类型",
+      "defaultValue": "1"
+    }
+  ],
+  "type": "default",
+  "id": "leave_form",
+  "exporter": {
+    "name": "Camunda Modeler",
+    "version": "5.3.0"
+  },
+  "executionPlatform": "Camunda Platform",
+  "executionPlatformVersion": "7.17.0",
+  "schemaVersion": 4
+}

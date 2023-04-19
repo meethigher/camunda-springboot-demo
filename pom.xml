@@ -48,15 +48,24 @@
     </dependencyManagement>
 
     <dependencies>
+
+        <!-- camunda 自带rest接口-->
         <dependency>
             <groupId>org.camunda.bpm.springboot</groupId>
             <artifactId>camunda-bpm-spring-boot-starter-rest</artifactId>
         </dependency>
 
+        <!-- camunda 自带web页面 -->
         <dependency>
             <groupId>org.camunda.bpm.springboot</groupId>
             <artifactId>camunda-bpm-spring-boot-starter-webapp</artifactId>
         </dependency>
+
+        <!--        &lt;!&ndash; 仅使用java api, 自己封装camunda接口 &ndash;&gt;-->
+        <!--        <dependency>-->
+        <!--            <groupId>org.springframework.boot</groupId>-->
+        <!--            <artifactId>spring-boot-starter-web</artifactId>-->
+        <!--        </dependency>-->
 
         <dependency>
             <groupId>org.camunda.bpm</groupId>

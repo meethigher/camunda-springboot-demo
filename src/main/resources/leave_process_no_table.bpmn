@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:camunda="http://camunda.org/schema/1.0/bpmn" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" id="Definitions_166eilg" targetNamespace="http://bpmn.io/schema/bpmn" exporter="Camunda Modeler" exporterVersion="5.3.0">
-  <bpmn:process id="leave_process" isExecutable="true">
+  <bpmn:process id="leave_process_no_table" isExecutable="true">
     <bpmn:startEvent id="Event_0mrueyi" name="开始">
       <bpmn:outgoing>Flow_0ec54ij</bpmn:outgoing>
     </bpmn:startEvent>
@@ -57,35 +57,22 @@
     <bpmn:sequenceFlow id="Flow_109xh8d" name="请假 [1,3)" sourceRef="Gateway_17ze5ct" targetRef="Event_1rre2tr">
       <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${result==1 &amp;&amp; days&lt;3}</bpmn:conditionExpression>
     </bpmn:sequenceFlow>
-    <bpmn:userTask id="HR" name="观音-人事">
-      <bpmn:extensionElements>
-        <camunda:taskListener delegateExpression="${createTaskListener}" event="create" />
-        <camunda:taskListener delegateExpression="${completeTaskListener}" event="complete" />
-      </bpmn:extensionElements>
+    <bpmn:userTask id="HR" name="观音-人事" camunda:formRef="result" camunda:formRefBinding="latest">
+      <bpmn:extensionElements />
       <bpmn:incoming>Flow_0mud1ku</bpmn:incoming>
       <bpmn:incoming>Flow_195my84</bpmn:incoming>
       <bpmn:outgoing>Flow_091ba0r</bpmn:outgoing>
     </bpmn:userTask>
-    <bpmn:userTask id="DM" name="唐僧-部门">
-      <bpmn:extensionElements>
-        <camunda:taskListener delegateExpression="${completeTaskListener}" event="complete" />
-        <camunda:taskListener delegateExpression="${createTaskListener}" event="create" />
-      </bpmn:extensionElements>
+    <bpmn:userTask id="DM" name="唐僧-部门" camunda:formRef="result" camunda:formRefBinding="latest">
+      <bpmn:extensionElements />
       <bpmn:incoming>Flow_0z686ph</bpmn:incoming>
       <bpmn:outgoing>Flow_076tffr</bpmn:outgoing>
     </bpmn:userTask>
-    <bpmn:userTask id="GM" name="如来-总经理">
-      <bpmn:extensionElements>
-        <camunda:taskListener delegateExpression="${completeTaskListener}" event="complete" />
-        <camunda:taskListener delegateExpression="${createTaskListener}" event="create" />
-      </bpmn:extensionElements>
+    <bpmn:userTask id="GM" name="如来-总经理" camunda:formRef="result.form" camunda:formRefBinding="latest">
+      <bpmn:extensionElements />
       <bpmn:incoming>Flow_19ihmf8</bpmn:incoming>
       <bpmn:outgoing>Flow_0htivbp</bpmn:outgoing>
     </bpmn:userTask>
-    <bpmn:serviceTask id="Activity_154ajji" name="填写请假" camunda:delegateExpression="${startLeaveDelegate}">
-      <bpmn:incoming>Flow_0ec54ij</bpmn:incoming>
-      <bpmn:outgoing>Flow_12t8170</bpmn:outgoing>
-    </bpmn:serviceTask>
     <bpmn:endEvent id="Event_00ki4if" name="请假被拒绝">
       <bpmn:incoming>Flow_0tc6pzb</bpmn:incoming>
       <bpmn:incoming>Flow_0cjmcm7</bpmn:incoming>
@@ -101,9 +88,13 @@
     <bpmn:sequenceFlow id="Flow_1rrmrys" name="总经理拒绝" sourceRef="Gateway_0pc45hw" targetRef="Event_00ki4if">
       <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${result==2}</bpmn:conditionExpression>
     </bpmn:sequenceFlow>
+    <bpmn:userTask id="Activity_154ajji" name="填写请假" camunda:formRef="leave_form" camunda:formRefBinding="latest">
+      <bpmn:incoming>Flow_0ec54ij</bpmn:incoming>
+      <bpmn:outgoing>Flow_12t8170</bpmn:outgoing>
+    </bpmn:userTask>
   </bpmn:process>
   <bpmndi:BPMNDiagram id="BPMNDiagram_1">
-    <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="leave_process">
+    <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="alibaba">
       <bpmndi:BPMNShape id="Event_0mrueyi_di" bpmnElement="Event_0mrueyi">
         <dc:Bounds x="152" y="272" width="36" height="36" />
         <bpmndi:BPMNLabel>
@@ -149,14 +140,14 @@
         <dc:Bounds x="1000" y="250" width="100" height="80" />
         <bpmndi:BPMNLabel />
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Activity_13bzuiu_di" bpmnElement="Activity_154ajji">
-        <dc:Bounds x="260" y="250" width="100" height="80" />
-      </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="Event_0mnn5cg_di" bpmnElement="Event_00ki4if">
         <dc:Bounds x="1152" y="102" width="36" height="36" />
         <bpmndi:BPMNLabel>
           <dc:Bounds x="1142" y="83" width="55" height="14" />
         </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_0ig78yk_di" bpmnElement="Activity_154ajji">
+        <dc:Bounds x="260" y="250" width="100" height="80" />
       </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge id="Flow_0ec54ij_di" bpmnElement="Flow_0ec54ij">
         <di:waypoint x="188" y="290" />

@@ -1,34 +1,34 @@
 整个camunda的绘图、具体使用，参照上一篇文章[Camunda工作流引擎简记](https://meethigher.top/blog/2022/camunda-quick-start/)。
 
-[源码地址](https://github.com/meethigher/camunda-springboot-demo)，相关技术储备如下
+**h2-rest-api版本**
 
-1. springboot--v2.5.4
-2. jpa--v2.5.4
-3. postgresql--v11
-4. camunda--v7.16.0
+1.)  部署流程
 
-整个过程不需要建表，所见即所得！这就是JPA面向对象编程的好处，这也是我认为JPA优于Mybatis的地方。
+* enable-duplicate-filtering：true表示禁止部署同名流程，false表示允许部署同名流程
 
-虽然我两种都用，但应用实际demo，JPA的速度远超Mybatis。
+```sh
+curl -X POST -F "deployment-name=部署名称" -F "deployment-source=部署来源" -F "enable-duplicate-filtering=true" -F "文件名1=@文件1" -F "文件名n=@文件n" http://localhost:8080/engine-rest/deployment/create
+```
 
-# 一、展示效果
+2.) 查询已定义流程
 
-1.) 启动项目
+* firstResult：开始数据的序号
+* maxResults：由开始数据往后查询的数量
+* latest：是否只展示最新版本
 
-![基于springboot+jpa+camunda实现简单的请假审批流程](https://meethigher.top/blog/2022/camunda-practice/image-20221124143906458.png)
+```sh
+curl -X GET http://localhost:8080/camunda/api/engine/engine/default/process-definition?firstResult=0&maxResults=15&latest=true
+```
 
-2.) 访问`http://localhost:9999/`，账号密码均为demo，可以找到最终流程图。
+3.) 发起一个流程
 
-![基于springboot+jpa+camunda实现简单的请假审批流程](https://meethigher.top/blog/2022/camunda-practice/image-20221124144055173.png)
+```sh
+curl -X POST -H "Content-Type:application/json"  --data @test.json http://localhost:8080/camunda/api/engine/engine/default/process-definition/leave_process_no_table:1:5c9b1b55-de8c-11ed-89df-c0b5d7a4ecb9/submit-form
+```
 
-3.) 访问`http://localhost:9999/swagger-ui/index.html`，调用接口，体验整个流程。
+test.json内容
 
-![基于springboot+jpa+camunda实现简单的请假审批流程](https://meethigher.top/blog/2022/camunda-practice/image-20221124144225583.png)
+```json
+{"businessKey":"111","variables":{"111":{"value":111,"type":"Integer"}}}
+```
 
-# 二、思路借鉴
-
-1. [xiaojing5576/workflow: 基于camunda实现的工作流设计](https://github.com/xiaojing5576/workflow)
-2. [FuriousPws002/camunda-bpm-spring-boot-example: Spring Boot and database integration camunda bpmn](https://github.com/FuriousPws002/camunda-bpm-spring-boot-example)
-
-3. [camunda-run: camunda工作流集成](https://gitee.com/heshaobing/camunda-run)
-4. [蓝花梗/wf-camunda - 码云 - 开源中国](https://gitee.com/lanhuageng/wf-camunda)
