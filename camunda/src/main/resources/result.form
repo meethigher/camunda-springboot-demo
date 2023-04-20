@@ -53,7 +53,7 @@
         },
         {
           "label": "拒绝",
-          "value": "2"
+          "value": "0"
         }
       ],
       "label": "result",
@@ -63,7 +63,8 @@
       "description": "审批",
       "validate": {
         "required": true
-      }
+      },
+      "defaultValue": "pass"
     }
   ],
   "type": "default",

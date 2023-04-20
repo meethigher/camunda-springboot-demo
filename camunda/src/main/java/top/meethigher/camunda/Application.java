@@ -1,4 +1,4 @@
-package top.meethigher;
+package top.meethigher.camunda;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

@@ -7,6 +7,12 @@ server:
   port: 8080
 camunda:
   bpm:
+    # https://docs.camunda.org/manual/7.12/reference/deployment-descriptors/tags/job-executor/#job-acquisition-configuration-properties
+    # 该配置建议使用官方配置，否则容易导致实际使用，camunda自身压力过大。
+    # 如果不配置以下内容，会导致提醒过慢，比如我设置10秒后提醒，可能实际会1min后才提醒
+    job-execution:
+      wait-time-in-millis: 500
+      max-wait: 1000
     database:
       # 乱写类型会出错，不如不写，camunda会自己判断。Error while building ibatis SqlSessionFactory: null
       type: h2
@@ -21,7 +27,6 @@ camunda:
     webapp:
       application-path: /camunda
 spring:
-
   # h2配置
   h2:
     console:

@@ -79,7 +79,7 @@
     <!--    <logger name="top.meethigher" level="DEBUG"/>-->
 
 
-    <root level="DEBUG">
+    <root level="INFO">
         <appender-ref ref="CONSOLE"/>
         <springProfile name="!dev">
             <!-- 非dev环境下，将数据写入文件归档 -->

@@ -1,4 +1,4 @@
-package top.meethigher.controller;
+package top.meethigher.camunda.controller;
 
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;

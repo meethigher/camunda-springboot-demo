@@ -1,4 +1,4 @@
-package top.meethigher.config;
+package top.meethigher.camunda.config;
 
 import io.swagger.annotations.Api;
 import org.springframework.context.annotation.Bean;
@@ -56,7 +56,7 @@ public class SwaggerConfig {
                 "用于测试多模块项目构建",
                 "接口文档1.0",
                 "",
-                new Contact("meethigher", "https://meethigher.top", "meethigher@qq.com"),
+                new Contact("top/meethigher", "https://meethigher.top", "meethigher@qq.com"),
                 "",
                 "",
                 new ArrayList<>()

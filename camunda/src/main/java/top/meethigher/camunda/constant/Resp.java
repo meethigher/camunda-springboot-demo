@@ -1,8 +1,7 @@
-package top.meethigher.constant;
+package top.meethigher.camunda.constant;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.RequiredArgsConstructor;
 
 @Data
 @AllArgsConstructor
